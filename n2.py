@@ -136,8 +136,8 @@ def navigate_to(page):
 def login():
     st.markdown("<h1 style='text-align: center;'>neuro</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 18px;'>Your AI-powered financial companion</p>", unsafe_allow_html=True)
-
-     col1, col2, col3 = st.columns([1, 2, 1])
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
      with col2:
          st.markdown("<div style='padding: 2rem; background-color: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>", unsafe_allow_html=True)
          username = st.text_input("Email or Username")
