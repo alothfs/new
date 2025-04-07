@@ -1566,171 +1566,171 @@ def display_profile():
 
                      st.rerun()
 
- # AI Assistant feature
+# AI Assistant feature
 def display_ai_assistant():
-     st.markdown("<h2>AI Financial Assistant</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>AI Financial Assistant</h2>", unsafe_allow_html=True)
 
-     if st.session_state.subscription in ['Pro', 'Elite']:
-         st.markdown("""
-         <p>Your personal AI financial assistant is here to help. Ask any question about your finances, get advice, or plan for the future.</p>
-         """, unsafe_allow_html=True)
+    if st.session_state.subscription in ['Pro', 'Elite']:
+        st.markdown("""
+        <p>Your personal AI financial assistant is here to help. Ask any question about your finances, get advice, or plan for the future.</p>
+        """, unsafe_allow_html=True)
 
-         # Quick questions section
-         st.markdown("<h3>Quick Questions</h3>", unsafe_allow_html=True)
+        # Quick questions section
+        st.markdown("<h3>Quick Questions</h3>", unsafe_allow_html=True)
 
-         quick_questions = [
-             "How much did I spend on dining last month?",
-             "What's my savings rate?",
-             "How can I improve my budget?",
-             "Am I on track for my goals?",
-             "What's my biggest expense category?"
-         ]
+        quick_questions = [
+            "How much did I spend on dining last month?",
+            "What's my savings rate?",
+            "How can I improve my budget?",
+            "Am I on track for my goals?",
+            "What's my biggest expense category?"
+        ]
 
-         cols = st.columns(len(quick_questions))
+        cols = st.columns(len(quick_questions))
 
-         for i, (col, question) in enumerate(zip(cols, quick_questions)):
-             with col:
-                 if st.button(question, key=f"quick_q_{i}"):
-                     st.session_state.ai_query = question
+        for i, (col, question) in enumerate(zip(cols, quick_questions)):
+            with col:
+                if st.button(question, key=f"quick_q_{i}"):
+                    st.session_state.ai_query = question
 
-         # Chat interface
-         if 'ai_messages' not in st.session_state:
-             st.session_state.ai_messages = [
-                 {"role": "assistant", "content": "Hi there! I'm your AI financial assistant. How can I help you today?"}
-             ]
+        # Chat interface
+        if 'ai_messages' not in st.session_state:
+            st.session_state.ai_messages = [
+                {"role": "assistant", "content": "Hi there! I'm your AI financial assistant. How can I help you today?"}
+            ]
 
-         # Display chat messages
-         for message in st.session_state.ai_messages:
-             with st.chat_message(message["role"]):
-                 st.write(message["content"])
+        # Display chat messages
+        for message in st.session_state.ai_messages:
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
 
-         # Chat input
-         if 'ai_query' not in st.session_state:
-             st.session_state.ai_query = ""
+        # Chat input
+        if 'ai_query' not in st.session_state:
+            st.session_state.ai_query = ""
 
-         user_query = st.chat_input("Ask anything about your finances...", key="chat_input") or st.session_state.ai_query
+        user_query = st.chat_input("Ask anything about your finances...", key="chat_input") or st.session_state.ai_query
 
-         if user_query:
-             # Reset the stored query
-             st.session_state.ai_query = ""
+        if user_query:
+            # Reset the stored query
+            st.session_state.ai_query = ""
 
-             # Add user message to chat
-             st.session_state.ai_messages.append({"role": "user", "content": user_query})
+            # Add user message to chat
+            st.session_state.ai_messages.append({"role": "user", "content": user_query})
 
-             # Display user message
-             with st.chat_message("user"):
-                 st.write(user_query)
+            # Display user message
+            with st.chat_message("user"):
+                st.write(user_query)
 
-             # Generate AI response
-             with st.chat_message("assistant"):
-                 with st.spinner("Thinking..."):
-                                         time.sleep(1)  # Simulate AI processing
+            # Generate AI response
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    time.sleep(1)  # Simulate AI processing
 
-                     # Sample responses based on query keywords
+                    # Sample responses based on query keywords
                     response = "I'm analyzing your financial data..."
-                 if "spend" in user_query.lower() and "dining" in user_query.lower():
-                         # Calculate dining expenses if we have transaction data
-                         if not st.session_state.transactions.empty:
-                             # Convert to datetime if needed
-                             transactions_df = st.session_state.transactions.copy()
-                             if not pd.api.types.is_datetime64_any_dtype(transactions_df['date']):
-                                 transactions_df['date'] = pd.to_datetime(transactions_df['date'])
+                    if "spend" in user_query.lower() and "dining" in user_query.lower():
+                        # Calculate dining expenses if we have transaction data
+                        if not st.session_state.transactions.empty:
+                            # Convert to datetime if needed
+                            transactions_df = st.session_state.transactions.copy()
+                            if not pd.api.types.is_datetime64_any_dtype(transactions_df['date']):
+                                transactions_df['date'] = pd.to_datetime(transactions_df['date'])
 
-                             # Filter for last month and dining category
-                             last_month = datetime.now() - timedelta(days=30)
-                             mask = (transactions_df['date'] >= last_month) & (transactions_df['category'] == 'Dining')
-                             dining_expenses = transactions_df[mask]['amount'].sum()
+                            # Filter for last month and dining category
+                            last_month = datetime.now() - timedelta(days=30)
+                            mask = (transactions_df['date'] >= last_month) & (transactions_df['category'] == 'Dining')
+                            dining_expenses = transactions_df[mask]['amount'].sum()
 
-                             response = f"In the last 30 days, you spent €{abs(dining_expenses):.2f} on dining out. This represents about 15% of your total expenses during this period."
-                         else:
-                             response = "You don't have any dining transactions recorded yet. Add some transactions so I can analyze your dining expenses."
+                            response = f"In the last 30 days, you spent €{abs(dining_expenses):.2f} on dining out. This represents about 15% of your total expenses during this period."
+                        else:
+                            response = "You don't have any dining transactions recorded yet. Add some transactions so I can analyze your dining expenses."
 
-                     elif "savings rate" in user_query.lower():
-                         if not st.session_state.transactions.empty:
-                             # Calculate income and expenses
-                             transactions_df = st.session_state.transactions.copy()
-                             total_income = transactions_df[transactions_df['type'] == 'income']['amount'].sum()
-                             total_expenses = abs(transactions_df[transactions_df['type'] == 'expense']['amount'].sum())
+                    elif "savings rate" in user_query.lower():
+                        if not st.session_state.transactions.empty:
+                            # Calculate income and expenses
+                            transactions_df = st.session_state.transactions.copy()
+                            total_income = transactions_df[transactions_df['type'] == 'income']['amount'].sum()
+                            total_expenses = abs(transactions_df[transactions_df['type'] == 'expense']['amount'].sum())
 
-                             if total_income > 0:
-                                 savings_rate = ((total_income - total_expenses) / total_income) * 100
-                                 response = f"Your overall savings rate is {savings_rate:.1f}%. The recommended savings rate is at least 20%. "
+                            if total_income > 0:
+                                savings_rate = ((total_income - total_expenses) / total_income) * 100
+                                response = f"Your overall savings rate is {savings_rate:.1f}%. The recommended savings rate is at least 20%. "
 
-                                 if savings_rate < 20:
-                                     response += "You might want to look for ways to increase your savings rate."
-                                 else:
-                                     response += "Great job! You're on track with your savings."
-                             else:
-                                 response = "I don't have enough income data to calculate your savings rate yet. Please add your income transactions."
-                         else:
-                             response = "I don't have enough transaction data to calculate your savings rate yet. Please add some income and expense transactions."
+                                if savings_rate < 20:
+                                    response += "You might want to look for ways to increase your savings rate."
+                                else:
+                                    response += "Great job! You're on track with your savings."
+                            else:
+                                response = "I don't have enough income data to calculate your savings rate yet. Please add your income transactions."
+                        else:
+                            response = "I don't have enough transaction data to calculate your savings rate yet. Please add some income and expense transactions."
 
-                     elif "improve" in user_query.lower() and "budget" in user_query.lower():
-                         response = """Here are some ways to improve your budget:
+                    elif "improve" in user_query.lower() and "budget" in user_query.lower():
+                        response = """Here are some ways to improve your budget:
 
- 1. Track all expenses for at least 30 days to understand your spending patterns.
- 2. Use the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings.
- 3. Identify and cut unnecessary subscriptions.
- 4. Set specific financial goals to stay motivated.
- 5. Review and adjust your budget monthly."""
+1. Track all expenses for at least 30 days to understand your spending patterns.
+2. Use the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings.
+3. Identify and cut unnecessary subscriptions.
+4. Set specific financial goals to stay motivated.
+5. Review and adjust your budget monthly."""
 
-                     elif "track" in user_query.lower() and "goals" in user_query.lower():
-                         if st.session_state.goals:
-                             on_track_goals = []
-                             off_track_goals = []
+                    elif "track" in user_query.lower() and "goals" in user_query.lower():
+                        if st.session_state.goals:
+                            on_track_goals = []
+                            off_track_goals = []
 
-                             for goal in st.session_state.goals:
-                                 # Calculate expected progress based on time
-                                 target_date = datetime.strptime(goal["date"], "%Y-%m-%d")
-                                 start_date = target_date - timedelta(days=365)  # Assume goal was set a year before target
-                                 total_days = (target_date - start_date).days
-                                 days_passed = (datetime.now() - start_date).days
+                            for goal in st.session_state.goals:
+                                # Calculate expected progress based on time
+                                target_date = datetime.strptime(goal["date"], "%Y-%m-%d")
+                                start_date = target_date - timedelta(days=365)  # Assume goal was set a year before target
+                                total_days = (target_date - start_date).days
+                                days_passed = (datetime.now() - start_date).days
 
-                                 if total_days > 0 and days_passed > 0:
-                                     expected_progress = min(days_passed / total_days, 1) * 100
-                                     actual_progress = (goal["current"] / goal["target"]) * 100
+                                if total_days > 0 and days_passed > 0:
+                                    expected_progress = min(days_passed / total_days, 1) * 100
+                                    actual_progress = (goal["current"] / goal["target"]) * 100
 
-                                     if actual_progress >= expected_progress * 0.9:  # Within 90% of expected
-                                         on_track_goals.append(goal["name"])
-                                     else:
-                                         off_track_goals.append(goal["name"])
+                                    if actual_progress >= expected_progress * 0.9:  # Within 90% of expected
+                                        on_track_goals.append(goal["name"])
+                                    else:
+                                        off_track_goals.append(goal["name"])
 
-                             if on_track_goals and off_track_goals:
-                                 response = f"You're on track with these goals: {', '.join(on_track_goals)}. However, you're falling behind on: {', '.join(off_track_goals)}. Consider adjusting your monthly contributions to catch up."
-                             elif on_track_goals:
-                                 response = f"Great news! You're on track with all your goals: {', '.join(on_track_goals)}. Keep up the good work!"
-                             else:
-                                 response = f"You're currently behind on all your goals: {', '.join(off_track_goals)}. Let's review your budget to find ways to increase your contributions."
-                         else:
-                             response = "You don't have any financial goals set up yet. Let's set some goals to track your progress!"
+                            if on_track_goals and off_track_goals:
+                                response = f"You're on track with these goals: {', '.join(on_track_goals)}. However, you're falling behind on: {', '.join(off_track_goals)}. Consider adjusting your monthly contributions."
+                            elif on_track_goals:
+                                response = f"Great news! You're on track with all your goals: {', '.join(on_track_goals)}. Keep up the good work!"
+                            else:
+                                response = f"You're currently behind on all your goals: {', '.join(off_track_goals)}. Let's review your budget to find ways to increase your contributions."
+                        else:
+                            response = "You don't have any financial goals set up yet. Let's set some goals to track your progress!"
 
-                     elif "biggest expense" in user_query.lower():
-                         if not st.session_state.transactions.empty:
-                             # Filter for expenses
-                             transactions_df = st.session_state.transactions.copy()
-                             expenses = transactions_df[transactions_df['type'] == 'expense']
+                    elif "biggest expense" in user_query.lower():
+                        if not st.session_state.transactions.empty:
+                            # Filter for expenses
+                            transactions_df = st.session_state.transactions.copy()
+                            expenses = transactions_df[transactions_df['type'] == 'expense']
 
-                             if not expenses.empty:
-                                 # Group by category
-                                 category_expenses = expenses.groupby('category')['amount'].sum().abs()
-                                 biggest_category = category_expenses.idxmax()
-                                 biggest_amount = category_expenses.max()
+                            if not expenses.empty:
+                                # Group by category
+                                category_expenses = expenses.groupby('category')['amount'].sum().abs()
+                                biggest_category = category_expenses.idxmax()
+                                biggest_amount = category_expenses.max()
 
-                                 response = f"Your biggest expense category is {biggest_category}, where you've spent €{biggest_amount:.2f}. This represents {(biggest_amount / category_expenses.sum() * 100):.1f}% of your total expenses."
-                             else:
-                                 response = "I don't have enough expense data to determine your biggest category. Please add more expense transactions."
-                         else:
-                             response = "I don't have any transaction data yet. Please add some expense transactions so I can analyze your spending patterns."
+                                response = f"Your biggest expense category is {biggest_category}, where you've spent €{biggest_amount:.2f}. This represents {(biggest_amount / category_expenses.sum()) * 100:.1f}% of your total expenses."
+                            else:
+                                response = "I don't have enough expense data to determine your biggest category. Please add more expense transactions."
+                        else:
+                            response = "I don't have any transaction data yet. Please add some expense transactions so I can analyze your spending patterns."
 
-                     st.write(response)
+                    st.write(response)
 
-                 # Add AI response to chat history
-                 st.session_state.ai_messages.append({"role": "assistant", "content": response})
-     else:
-         st.warning("The AI Financial Assistant is available with Pro and Elite subscriptions.")
-         if st.button("Upgrade Subscription"):
-             navigate_to("subscription")
-             st.rerun()
+                # Add AI response to chat history
+                st.session_state.ai_messages.append({"role": "assistant", "content": response})
+    else:
+        st.warning("The AI Financial Assistant is available with Pro and Elite subscriptions.")
+        if st.button("Upgrade Subscription"):
+            navigate_to("subscription")
+            st.rerun()
 
  # Main application
 def main():
