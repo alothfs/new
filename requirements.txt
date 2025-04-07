@@ -11,7 +11,5 @@ sklearn[preprocessing]
 sklearn[cluster]
 sklearn[decomposition]
 tensorflow
-pickle
-nltk
-re
+
 
