@@ -133,7 +133,7 @@ def navigate_to(page):
      st.session_state.current_page = page
 
  # Authentication functions
- def login():
+  def login():
      st.markdown("<h1 style='text-align: center;'>neuro</h1>", unsafe_allow_html=True)
      st.markdown("<p style='text-align: center; font-size: 18px;'>Your AI-powered financial companion</p>", unsafe_allow_html=True)
 
