@@ -6,7 +6,7 @@ plotly[express]
 pillow
 matplotlib
 scikit-learn
-scikit-learn[ensemble] 
+sklearn[ensemble] 
 tensorflow
 pickle
 nltk
