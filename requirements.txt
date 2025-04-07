@@ -7,6 +7,9 @@ pillow
 matplotlib
 scikit-learn
 sklearn[ensemble] 
+sklearn[preprocessing]
+sklearn[cluster]
+sklearn[decomposition]
 tensorflow
 pickle
 nltk
