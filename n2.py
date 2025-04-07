@@ -18,7 +18,7 @@ import time
 import json
 
  # Set page configuration
-  st.set_page_config(
+st.set_page_config(
      page_title="neuro",
      page_icon="💰",
      layout="wide",
