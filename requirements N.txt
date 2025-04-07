@@ -6,3 +6,7 @@ plotly[express]
 pillow
 scikit-learn
 matplotlib
+sklearn[ensemble] 
+sklearn[preprocessing]
+sklearn[cluster] 
+sklearn[decomposition]
