@@ -1050,5 +1050,33 @@ def display_dashboard():
     </div>
     """, unsafe_allow_html=True)
 
+ # Define  main
+def main():
+    # Set page configuration
+    st.set_page_config(page_title="FinanceAI Dashboard", layout="wide")
+    
+    # Initialize session state variables if they don't exist
+    if 'balance' not in st.session_state:
+        st.session_state.balance = 2500.0
+    if 'savings' not in st.session_state:
+        st.session_state.savings = 5000.0
+    if 'investments' not in st.session_state:
+        st.session_state.investments = 7500.0
+    if 'roundups' not in st.session_state:
+        st.session_state.roundups = 42.50
+    if 'goals' not in st.session_state:
+        st.session_state.goals = [
+            {"name": "Emergency Fund", "current": 2000, "target": 5000, "target_date": "2023-12-31"},
+            {"name": "Vacation", "current": 800, "target": 1500, "target_date": "2023-08-15"},
+            {"name": "New Car", "current": 3500, "target": 15000, "target_date": "2024-06-30"}
+        ]
+    if 'subscription_tier' not in st.session_state:
+        st.session_state.subscription_tier = "Basic"
+    
+    # Call the dashboard display function
+    display_dashboard()
+
+# Then the existing code
 if __name__ == "__main__":
     main()
+    
