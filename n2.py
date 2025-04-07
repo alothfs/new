@@ -1627,9 +1627,8 @@ def display_ai_assistant():
                                          time.sleep(1)  # Simulate AI processing
 
                      # Sample responses based on query keywords
-                     response = "I'm analyzing your financial data..."
-
-                     if "spend" in user_query.lower() and "dining" in user_query.lower():
+                    response = "I'm analyzing your financial data..."
+                 if "spend" in user_query.lower() and "dining" in user_query.lower():
                          # Calculate dining expenses if we have transaction data
                          if not st.session_state.transactions.empty:
                              # Convert to datetime if needed
