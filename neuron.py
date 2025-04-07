@@ -1622,7 +1622,7 @@ def display_sidebar():
             navigate_to("goals")
             st.rerun()
 
-                if st.button("AI Assistant", use_container_width=True):
+        if st.button("AI Assistant", use_container_width=True):
             navigate_to("ai_assistant")
             st.rerun()
 
