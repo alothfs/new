@@ -533,7 +533,7 @@ def allocate_funds():
      }
 
  # Function to generate personalized financial insights
- def generate_personalized_insights():
+def generate_personalized_insights():
      """
      Provides tailored financial guidance based on transaction history and trends.
      Returns a list of personalized insights and recommendations.
@@ -595,7 +595,7 @@ def allocate_funds():
      return insights
 
  # Function to generate insights based on user data
- def generate_insights():
+def generate_insights():
      insights = []
 
      # Only generate insights if we have transactions
@@ -640,7 +640,7 @@ def allocate_funds():
      return insights[:3]  # Return at most 3 insights
 
  # Function to predict future expenses using a simple linear regression model
- def predict_future_expenses():
+def predict_future_expenses():
      if not st.session_state.transactions.empty:
          # Prepare data for prediction
          transactions_df = st.session_state.transactions.copy()
@@ -666,7 +666,7 @@ def allocate_funds():
      return None
 
  # Dashboard components
- def display_dashboard():
+def display_dashboard():
      st.markdown("<h2>Dashboard</h2>", unsafe_allow_html=True)
 
      # Top action: Add transaction button
@@ -837,7 +837,7 @@ def allocate_funds():
          st.rerun()
 
  # Savings and Investments components
- def display_savings():
+def display_savings():
      st.markdown("<h2>Savings & Investments</h2>", unsafe_allow_html=True)
 
      tab1, tab2 = st.tabs(["Savings", "Investments"])
@@ -950,7 +950,7 @@ def allocate_funds():
                  st.rerun()
 
  # Transactions and analysis components
- def display_transactions():
+def display_transactions():
      st.markdown("<h2>Transactions & Analysis</h2>", unsafe_allow_html=True)
 
      tab1, tab2 = st.tabs(["Transactions", "Cash Flow Analysis"])
@@ -1187,7 +1187,7 @@ def allocate_funds():
                  st.rerun()
 
  # Financial goals components
- def display_goals():
+def display_goals():
      st.markdown("<h2>Financial Goals</h2>", unsafe_allow_html=True)
 
      # Add new goal form
@@ -1430,7 +1430,7 @@ def allocate_funds():
              st.info("Current Plan")
 
  # Profile and settings
- def display_profile():
+def display_profile():
      st.markdown("<h2>Profile & Settings</h2>", unsafe_allow_html=True)
 
      tab1, tab2 = st.tabs(["Profile", "Settings"])
@@ -1567,7 +1567,7 @@ def allocate_funds():
                      st.rerun()
 
  # AI Assistant feature
- def display_ai_assistant():
+def display_ai_assistant():
      st.markdown("<h2>AI Financial Assistant</h2>", unsafe_allow_html=True)
 
      if st.session_state.subscription in ['Pro', 'Elite']:
@@ -1734,7 +1734,7 @@ def allocate_funds():
              st.rerun()
 
  # Main application
- def main():
+def main():
      # Initialize session state variables if they don't exist
      if 'login_status' not in st.session_state:
          st.session_state.login_status = False
@@ -1772,7 +1772,7 @@ def allocate_funds():
              display_dashboard()  # Default to dashboard
 
  # Initialize session state for user data entry
- def initialize_session_state():
+def initialize_session_state():
      # App settings
      if 'subscription' not in st.session_state:
          st.session_state.subscription = 'Basic'
@@ -1889,7 +1889,7 @@ def allocate_funds():
      """, unsafe_allow_html=True)
 
  # App header
- def display_header():
+def display_header():
      st.markdown("""
      <div class="main-header">
          <h1>Neuro Finance</h1>
@@ -1938,7 +1938,7 @@ def allocate_funds():
              st.rerun()
 
  # Login page
- def display_login():
+def display_login():
      st.markdown("""
      <div class="login-form">
          <h2 style="text-align: center;">Welcome to Neuro Finance</h2>
@@ -1985,7 +1985,7 @@ def allocate_funds():
                      st.error("Passwords do not match")
 
  # Run the app
- if __name__ == "__main__":
+if __name__ == "__main__":
      try:
          # Initialize session state variables on first run
          initialize_session_state()
