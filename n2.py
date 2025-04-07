@@ -1805,7 +1805,7 @@ def initialize_session_state():
          st.session_state.first_login = True
 
  # Custom styles
- def apply_custom_styles():
+def apply_custom_styles():
      st.markdown("""
      <style>
          .main-header {
@@ -1897,7 +1897,7 @@ def display_header():
      """, unsafe_allow_html=True)
 
  # Sidebar navigation
- def display_sidebar():
+def display_sidebar():
      with st.sidebar:
          st.markdown("## Navigation")
 
