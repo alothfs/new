@@ -4,7 +4,6 @@ numpy
 plotly
 plotly[express]
 pillow
-scikit-learn
 matplotlib
 sklearn[ensemble] 
 sklearn[preprocessing]
@@ -14,5 +13,4 @@ tensorflow
 pickle
 nltk
 re
-RandomForestRegressor
-RandomForestClassifier
+
