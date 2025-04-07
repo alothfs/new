@@ -5,10 +5,8 @@ plotly
 plotly[express]
 pillow
 matplotlib
-sklearn[ensemble] 
-sklearn[preprocessing]
-sklearn[cluster] 
-sklearn[decomposition]
+scikit-learn
+scikit-learn[ensemble] 
 tensorflow
 pickle
 nltk
