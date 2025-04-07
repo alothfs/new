@@ -302,6 +302,81 @@ def onboarding():
         st.session_state.current_page = 'dashboard'
         st.rerun()
 
+def get_user_risk_preference(user_id):
+    conn = sqlite3.connect('startive.db')
+    c = conn.cursor()
+
+    c.execute("SELECT risk_preference FROM users WHERE id = ?", (user_id,))
+    risk = c.fetchone()[0]
+
+    conn.close()
+    return risk
+
+def determine_allocation(risk_preference):
+    """Determine allocation type based on user risk preference"""
+    if risk_preference == 'conservative':
+        options = ['high-yield savings'] * 7 + ['ETF'] * 3
+    elif risk_preference == 'moderate':
+        options = ['high-yield savings'] * 5 + ['ETF'] * 4 + ['crypto'] * 1
+    elif risk_preference == 'aggressive':
+        options = ['high-yield savings'] * 3 + ['ETF'] * 5 + ['crypto'] * 2
+    else:
+        options = ['high-yield savings'] * 5 + ['ETF'] * 5
+
+    return np.random.choice(options)
+    
+def update_risk_preference(user_id, risk_preference):
+    conn = sqlite3.connect('startive.db')
+    c = conn.cursor()
+
+    c.execute("UPDATE users SET risk_preference = ? WHERE id = ?", (risk_preference, user_id))
+
+    conn.commit()
+    conn.close()
+
+# Only show welcome page if not logged in
+if not st.session_state.logged_in:
+    st.title("Welcome to Neuro")
+
+    # Demonstrate basic functionality without requiring login
+    st.markdown("""
+    ### Smart Savings Made Simple
+    Startive helps you save money automatically through:
+    - Round-up transactions
+    - Smart investment allocations
+    - Goal tracking
+    - AI-powered financial advice
+
+    Register or login to start your saving journey today!
+    """)
+
+    # Sample data visualization that doesn't depend on sklearn
+    st.subheader("How Startive Works")
+            # Profile tabs
+        tab1, tab2 = st.tabs(["Risk Profile""])
+
+        with tab1:
+            st.subheader("Investment Risk Profile")
+            current_risk = st.session_state.user['risk_preference']
+            risk_options = ["conservative", "moderate", "aggressive"]
+            risk_descriptions = {
+                "conservative": "Lower risk, steady returns. Focus on high-yield savings and stable ETFs.",
+                "moderate": "Balanced risk and returns. Mix of savings, ETFs, and minimal crypto.",
+                "aggressive": "Higher risk, potential for higher returns. More allocation to ETFs and crypto."
+            }
+
+            selected_risk = st.radio("Select your risk preference:", risk_options, index=risk_options.index(current_risk))
+            st.markdown(f"**{risk_descriptions[selected_risk]}**")
+
+            if st.button("Update Risk Profile") and selected_risk != current_risk:
+                update_risk_preference(st.session_state.user['id'], selected_risk)
+                st.session_state.user['risk_preference'] = selected_risk
+                st.success("Risk profile updated successfully!")
+                st.rerun()
+
+
+
+
 # Function to generate insights based on user data
 def generate_insights():
     insights = []
@@ -326,6 +401,7 @@ def generate_insights():
             if total_income > 0:
                 savings_rate = ((total_income - total_expenses) / total_income) * 100
                 insights.append(f"Your current savings rate is {savings_rate:.1f}%.")
+
 
     # Add insights based on goals
     if st.session_state.goals:
