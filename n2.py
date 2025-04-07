@@ -26,14 +26,14 @@ st.set_page_config(
  )
 
  # Define improved color scheme
- PRIMARY_COLOR = "#4A90E2"  # Blue
- SECONDARY_COLOR = "#F5F5F5"  # Light Gray
- ACCENT_COLOR = "#50E3C2"  # Teal
- TEXT_COLOR = "#333333"  # Dark Gray
- LIGHT_TEXT = "#FFFFFF"  # White
+PRIMARY_COLOR = "#4A90E2"  # Blue
+SECONDARY_COLOR = "#F5F5F5"  # Light Gray
+ACCENT_COLOR = "#50E3C2"  # Teal
+TEXT_COLOR = "#333333"  # Dark Gray
+LIGHT_TEXT = "#FFFFFF"  # White
 
  # Apply custom CSS
- st.markdown(f"""
+st.markdown(f"""
  <style>
      .main .block-container {{
          padding-top: 1rem;
@@ -104,32 +104,32 @@ st.set_page_config(
  </style>
  """, unsafe_allow_html=True)
 
- # Initialize session state
- if 'login_status' not in st.session_state:
+# Initialize session state
+if 'login_status' not in st.session_state:
      st.session_state.login_status = False
- if 'current_page' not in st.session_state:
+if 'current_page' not in st.session_state:
      st.session_state.current_page = 'login'
- if 'subscription' not in st.session_state:
+if 'subscription' not in st.session_state:
      st.session_state.subscription = 'Basic'  # Default subscription
- if 'balance' not in st.session_state:
+if 'balance' not in st.session_state:
      st.session_state.balance = 0.0
- if 'savings' not in st.session_state:
+if 'savings' not in st.session_state:
      st.session_state.savings = 0.0
- if 'investments' not in st.session_state:
+if 'investments' not in st.session_state:
      st.session_state.investments = 0.0
- if 'goals' not in st.session_state:
+if 'goals' not in st.session_state:
      st.session_state.goals = []
- if 'transactions' not in st.session_state:
+if 'transactions' not in st.session_state:
      st.session_state.transactions = pd.DataFrame(columns=["date", "category", "amount", "description", "type"])
- if 'insights' not in st.session_state:
+if 'insights' not in st.session_state:
      st.session_state.insights = []
- if 'roundups' not in st.session_state:
+if 'roundups' not in st.session_state:
      st.session_state.roundups = 0.0  # Amount accumulated from round-ups
- if 'first_login' not in st.session_state:
+if 'first_login' not in st.session_state:
      st.session_state.first_login = True
 
  # Navigation function
- def navigate_to(page):
+def navigate_to(page):
      st.session_state.current_page = page
 
  # Authentication functions
