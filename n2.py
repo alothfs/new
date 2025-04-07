@@ -1344,7 +1344,7 @@ def display_goals():
              st.rerun()
 
  # Subscription management
- def display_subscription():
+def display_subscription():
      st.markdown("<h2>Subscription Management</h2>", unsafe_allow_html=True)
 
      st.markdown("""
