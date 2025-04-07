@@ -1497,6 +1497,109 @@ def display_profile():
         # Existing subscription management code...
         display_subscription()
 
+# Onboarding function for new users
+def onboarding():
+    st.markdown("<h1 style='text-align: center;'>Welcome to neuro</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 18px;'>Let's set up your financial profile</p>", unsafe_allow_html=True)
+
+    # Create tabs for each step of the onboarding process
+    tab1, tab2, tab3 = st.tabs(["Personal Information", "Financial Data", "Goals"])
+
+    with tab1:
+        st.header("Personal Information")
+
+        with st.form("personal_info_form"):
+            col1, col2 = st.columns(2)
+
+            with col1:
+                full_name = st.text_input("Full Name")
+                email = st.text_input("Email")
+                phone = st.text_input("Phone Number")
+
+            with col2:
+                currency = st.selectbox("Currency", ["EUR (€)", "USD ($)", "GBP (£)", "JPY (¥)"])
+                income_frequency = st.selectbox("Income Frequency", ["Monthly", "Bi-weekly", "Weekly"])
+
+            submit_personal_info = st.form_submit_button("Next")
+
+            if submit_personal_info:
+                # Store personal information in session state
+                st.session_state.full_name = full_name
+                st.session_state.email = email
+                st.session_state.phone = phone
+                st.session_state.currency = currency
+                st.session_state.income_frequency = income_frequency
+
+                st.success("Personal information saved! Proceed to financial data.")
+                st.session_state.current_page = 'financial_data'  # Move to the next step
+                st.rerun()
+
+    with tab2:
+        st.header("Financial Data")
+
+        with st.form("financial_data_form"):
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.number_input("Current Account Balance", value=0.0, step=100.0, key="initial_balance")
+                st.number_input("Savings", value=0.0, step=100.0, key="initial_savings")
+
+            with col2:
+                st.number_input("Investments", value=0.0, step=100.0, key="initial_investments")
+                st.number_input("Monthly Income", value=0.0, step=100.0, key="monthly_income")
+
+            submit_financial_data = st.form_submit_button("Next")
+
+            if submit_financial_data:
+                # Store financial data in session state
+                st.session_state.balance = st.session_state.initial_balance
+                st.session_state.savings = st.session_state.initial_savings
+                st.session_state.investments = st.session_state.initial_investments
+
+                st.success("Financial data saved! Proceed to set your goals.")
+                st.session_state.current_page = 'goals'  # Move to the next step
+                st.rerun()
+
+    with tab3:
+        st.header("Financial Goals")
+
+        st.info("Set up your financial goals to help us provide better insights.")
+
+        with st.form("add_goal_form"):
+            goal_name = st.text_input("Goal Name", placeholder="e.g., Emergency Fund, New Car, Vacation")
+            goal_target = st.number_input("Target Amount (€)", min_value=1.0, value=1000.0)
+            goal_current = st.number_input("Current Amount (€)", min_value=0.0, value=0.0)
+            goal_date = st.date_input("Target Date", value=datetime.now() + timedelta(days=365))
+
+            submit_goal = st.form_submit_button("Add Goal")
+
+            if submit_goal and goal_name:
+                # Add the goal to session state
+                new_goal = {
+                    "name": goal_name,
+                    "target": goal_target,
+                    "current": goal_current,
+                    "date": goal_date.strftime("%Y-%m-%d")
+                }
+
+                st.session_state.goals.append(new_goal)
+                st.success(f"Goal '{goal_name}' added!")
+
+        # Display added goals
+        if st.session_state.goals:
+            st.subheader("Your Goals")
+            for goal in st.session_state.goals:
+                st.markdown(f"- {goal['name']} (Target: €{goal['target']}, Current: €{goal['current']}, Date: {goal['date']})")
+
+    # Complete onboarding button
+    if st.button("Complete Setup"):
+        # Mark first login as complete
+        st.session_state.first_login = False
+
+        # Navigate to dashboard
+        st.session_state.current_page = 'dashboard'
+        st.rerun()
+
 # Main application
 def main():
     # Initialize session state variables if they don't exist
@@ -1532,6 +1635,8 @@ def main():
             display_profile()
         elif st.session_state.current_page == 'ai_assistant':
             display_ai_assistant()
+        elif st.session_state.current_page == 'financial_data':
+            onboarding()  # Call onboarding for financial data entry
         else:
             display_dashboard()  # Default to dashboard
 
